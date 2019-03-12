@@ -1,4 +1,4 @@
-name := """play-java-starter-example"""
+name := """THIS-IS-THE-DEMO"""
 
 version := "1.0-SNAPSHOT"
 
@@ -9,6 +9,9 @@ scalaVersion := "2.12.6"
 crossScalaVersions := Seq("2.11.12", "2.12.4")
 
 libraryDependencies += guice
+
+//GUI
+libraryDependencies += "org.webjars" % "bootstrap" % "4.3.1"
 
 //Database
 libraryDependencies += javaJpa
