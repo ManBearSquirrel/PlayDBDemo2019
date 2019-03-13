@@ -1,12 +1,7 @@
-@(employee : Employee, reports : List[Employee])
-<!DOCTYPE html>
+@(employee : Employee, reports : List[Employee], reportsToEmployee : Employee, state : State)
+@doctype.render
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>Title</title>
-        <link rel="stylesheet" href="/assets/lib/bootstrap/css/bootstrap.min.css">
-        <script src="/assets/lib/bootstrap/js/bootstrap.min.js"></script>
-    </head>
+    @header.render(employee.getLastName)
     <body>
         <div class="container">
             <div class="page-header">
@@ -33,6 +28,18 @@
                             <label class="badge badge-info">Last Name</label>
                             @employee.getLastName
                         </div>
+                        <div class="col-4">
+                            <label class="badge badge-info">Reports to</label>
+                            @if(reportsToEmployee == null){
+                               None
+                            } else {
+                               @reportsToEmployee.getLastName
+                            }
+                        </div>
+                        <div class="col-4">
+                            <label class="badge badge-info">State</label>
+                            @state.getStateName
+                        </div>
                     </div>
                     <div>
                         <div class="alert alert-info">
@@ -40,13 +47,13 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-3">
+                <div class="col-3 text-center">
                     <img src="/employeepicture/@employee.getEmployeeId">
                 </div>
             </div>
             <div class="row">
                 <div class="col-9"></div>
-                <div class="col-3">
+                <div class="col-3 text-center">
                     <label class="badge badge-info">Direct Reports</label>
                     @for(report <- reports){
                     <p>@report.getLastName</p>

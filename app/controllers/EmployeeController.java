@@ -1,6 +1,7 @@
 package controllers;
 
 import models.Employee;
+import models.State;
 import play.db.jpa.JPAApi;
 import play.db.jpa.Transactional;
 import play.mvc.Controller;
@@ -28,11 +29,23 @@ public class EmployeeController extends Controller
         query.setParameter("employeeId", employeeId);
         Employee employee = query.getSingleResult();
 
+        Employee reportsToEmployee = null;
+
+        if (employee.getReportsToEmployeeId() != null)
+        {
+            query.setParameter("employeeId", employee.getReportsToEmployeeId());
+            reportsToEmployee = query.getSingleResult();
+        }
+
+        TypedQuery<State> statesQuery = db.em().createQuery("SELECT s FROM State s WHERE stateId = :stateId", State.class);
+        statesQuery.setParameter("stateId", employee.getStateId());
+        State state = statesQuery.getSingleResult();
+
         TypedQuery<Employee> reportsQuery = db.em().createQuery("SELECT e FROM Employee e WHERE reportsToEmployeeId = :employeeId", Employee.class);
         reportsQuery.setParameter("employeeId", employeeId);
         List<Employee> reports = reportsQuery.getResultList();
 
-        return ok(views.html.employee.render(employee, reports));
+        return ok(views.html.employee.render(employee, reports, reportsToEmployee, state));
     }
 
     @Transactional(readOnly = true)
