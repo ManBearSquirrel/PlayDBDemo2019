@@ -1,0 +1,18 @@
+@(products : List[ProductDetail])
+@doctype.render
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Products</title>
+    </head>
+    <body>
+        <table>
+            @for(product<-products){
+            <tr>
+                <td>@product.getProductName</td>
+                <td>@product.getCategoryName</td>
+            </tr>
+            }
+        </table>
+    </body>
+</html>

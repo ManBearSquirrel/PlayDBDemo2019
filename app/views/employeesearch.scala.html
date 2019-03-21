@@ -1,0 +1,29 @@
+@(employees : List[EmployeeDetail])
+@doctype.render
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Employee Search</title>
+    </head>
+    <body>
+        <form>
+            <label for="name">Name </label>
+            <input type="text" name="name" id="name">
+            <input type="submit" value="Search">
+        </form>
+        <table>
+            <tr>
+                <th>Last Name</th>
+                <th>First Name</th>
+                <th>Title</th>
+            </tr>
+            @for(employee<-employees){
+            <tr>
+                <td><a href="/employeeedit/@employee.getEmployeeId">@employee.getLastName</a></td>
+                <td>@employee.getFirstName</td>
+                <td>@employee.getTitleName</td>
+            </tr>
+            }
+        </table>
+    </body>
+</html>

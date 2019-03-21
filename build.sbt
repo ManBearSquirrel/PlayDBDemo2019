@@ -12,6 +12,7 @@ libraryDependencies += guice
 
 //GUI
 libraryDependencies += "org.webjars" % "bootstrap" % "4.3.1"
+libraryDependencies += "org.webjars.bower" % "chart.js" % "2.7.3"
 
 //Database
 libraryDependencies += javaJpa

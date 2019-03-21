@@ -1,0 +1,35 @@
+@(employee : Employee, titles : List[Title], hobbies : List[Hobby])
+@doctype.render
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Title</title>
+    </head>
+    <body>
+        <p>Editing @employee.getFullName</p>
+        <form method="post" enctype="multipart/form-data">
+            @helper.CSRF.formField
+            <input type="text" value="@employee.getFirstName" name="firstName">
+            <input type="text" value="@employee.getLastName" name="lastName">
+            <input type="date" value="@employee.getBirthdate" name="birthdate">
+
+            <select name="titleId">
+                @for(title<-titles){
+                    <option value="@title.getTitleId" @if(title.getTitleId==employee.getTitleId){selected}> @title.getTitleName</option>
+                }
+            </select>
+
+            <br>
+            <select name="hobbyId">
+                <option value="">None</option>
+                @for(hobby<-hobbies){
+                <option value="@hobby.getHobbyId" @if(hobby.getHobbyId==employee.getHobbyId){selected}> @hobby.getHobbyName</option>
+                }
+            </select>
+            Or Add a new hobby <input type="text" name="newHobby">
+            <br>
+            <input type="file" id="picture" name="picture">
+            <input type="submit" value="Save">
+        </form>
+    </body>
+</html>

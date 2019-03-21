@@ -31,9 +31,9 @@
                         <div class="col-4">
                             <label class="badge badge-info">Reports to</label>
                             @if(reportsToEmployee == null){
-                               None
+                            None
                             } else {
-                               @reportsToEmployee.getLastName
+                            @reportsToEmployee.getLastName
                             }
                         </div>
                         <div class="col-4">
@@ -41,14 +41,16 @@
                             @state.getStateName
                         </div>
                     </div>
-                    <div>
-                        <div class="alert alert-info">
-                            <strong>Danger!</strong> This person is a time traveller
+                    <div class="row">
+                        <div class="col=12">
+                            <div class="alert alert-info">
+                                <strong>Danger!</strong> This person is a time traveller
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div class="col-3 text-center">
-                    <img src="/employeepicture/@employee.getEmployeeId">
+                    <img src="/employeepicture/@employee.getEmployeeId" width="200px">
                 </div>
             </div>
             <div class="row">

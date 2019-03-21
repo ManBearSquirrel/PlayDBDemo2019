@@ -1,6 +1,8 @@
 package models;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -8,7 +10,7 @@ import java.time.LocalDate;
 @Entity
 public class Employee
 {
-    @Id
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int employeeId;
 
     private String firstName;
@@ -44,9 +46,19 @@ public class Employee
         this.firstName = firstName;
     }
 
+    public void setLastName(String lastName)
+    {
+        this.lastName = lastName;
+    }
+
     public String getLastName()
     {
         return lastName;
+    }
+
+    public String getFullName()
+    {
+        return firstName + " " + lastName;
     }
 
     public int getTitleId()
@@ -122,5 +134,25 @@ public class Employee
     public BigDecimal getSalary()
     {
         return salary;
+    }
+
+    public void setTitleId(int titleId)
+    {
+        this.titleId = titleId;
+    }
+
+    public void setHobbyId(Integer hobbyId)
+    {
+        this.hobbyId = hobbyId;
+    }
+
+    public void setBirthdate(LocalDate birthdate)
+    {
+        this.birthdate = birthdate;
+    }
+
+    public void setPicture(byte[] picture)
+    {
+        this.picture = picture;
     }
 }

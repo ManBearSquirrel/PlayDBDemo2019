@@ -6,7 +6,18 @@
 GET     /                           controllers.HomeController.index
 
 GET     /employee/:id               controllers.EmployeeController.getEmployee(id:Integer)
+GET     /employeeadd                controllers.EmployeeController.getEmployeeAdd
+POST    /employeeadd                controllers.EmployeeController.postEmployeeAdd
+GET     /employeeedit/:id           controllers.EmployeeController.getEmployeeEdit(id:Integer)
+POST    /employeeedit/:id           controllers.EmployeeController.postEmployeeEdit(id:Integer)
+GET     /employees                  controllers.EmployeeController.getEmployees
+GET     /employeesearch             controllers.EmployeeController.getEmployeeSearch
 GET     /employeepicture/:id        controllers.EmployeeController.getPicture(id:Integer)
+
+GET     /products                   controllers.ProductController.getProducts
+
+
+GET     /categorysummary            controllers.CategoryController.getCategorySummary
 
 # An example controller showing how to use dependency injection
 GET     /count                      controllers.CountController.count
@@ -15,3 +26,7 @@ GET     /message                    controllers.AsyncController.message
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
+
+
+GET     /chartfun                   controllers.DemoController.getChart
+GET     /chartfunjson               controllers.DemoController.getChartJSON

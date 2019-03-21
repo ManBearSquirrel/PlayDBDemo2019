@@ -1,5 +1,6 @@
 package controllers;
 
+import com.google.common.io.Files;
 import models.*;
 import play.Logger;
 import play.data.DynamicForm;
@@ -7,10 +8,12 @@ import play.data.FormFactory;
 import play.db.jpa.JPAApi;
 import play.db.jpa.Transactional;
 import play.mvc.Controller;
+import play.mvc.Http;
 import play.mvc.Result;
 
 import javax.inject.Inject;
 import javax.persistence.TypedQuery;
+import java.io.File;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -59,7 +62,7 @@ public class EmployeeController extends Controller
         List<Employee> reports = reportsQuery.getResultList();*/
         List<Employee> reports = employeeRepository.getReports(employeeId);
 
-        return ok(views.html.employeedave.render(employee, reports, reportsToEmployee, state));
+        return ok(views.html.employee.render(employee, reports, reportsToEmployee, state));
     }
 
     @Transactional(readOnly = true)
@@ -106,12 +109,21 @@ public class EmployeeController extends Controller
 
         String hobby = form.get("hobbyId");
         Integer hobbyId;
+        String newHobbyName = form.get("newHobby");
 
         if (hobby != null && hobby.length() > 0)
         {
             hobbyId = Integer.parseInt(hobby);
         }
-        else {
+        else if (!newHobbyName.isEmpty())
+        {
+            Hobby newHobby = new Hobby();
+            newHobby.setHobbyName(newHobbyName);
+            db.em().persist(newHobby);
+            hobbyId = newHobby.getHobbyId();
+        }
+        else
+        {
             hobbyId = null;
         }
 
@@ -120,6 +132,25 @@ public class EmployeeController extends Controller
         employee.setBirthdate(birthdate);
         employee.setTitleId(titleId);
         employee.setHobbyId(hobbyId);
+
+        Http.MultipartFormData<File> formData = request().body().asMultipartFormData();
+        Http.MultipartFormData.FilePart<File> filePart = formData.getFile("picture");
+        File file = filePart.getFile();
+
+        byte[] picture;
+
+        try
+        {
+            picture = Files.toByteArray(file);
+
+            if (picture != null && picture.length > 0)
+            {
+                employee.setPicture(picture);
+            }
+        } catch (Exception e)
+        {
+            picture = null;
+        }
 
         db.em().persist(employee);
 
@@ -150,11 +181,42 @@ public class EmployeeController extends Controller
         Logger.debug(birthday.toString());
 
 
-
         db.em().persist(employee);
 
         return ok("saved");
     }
 
+    @Transactional(readOnly=true)
+    public Result getEmployees()
+    {
+        TypedQuery<Employee> query = db.em().createQuery("SELECT e FROM Employee e ORDER BY lastName, firstName, employeeId", Employee.class);
+        List<Employee> employees = query.getResultList();
 
+        return ok(views.html.employees.render(employees));
+    }
+
+    @Transactional(readOnly=true)
+    public Result getEmployeeSearch()
+    {
+        DynamicForm form = formFactory.form().bindFromRequest();
+        String name = form.get("name");
+
+        if (name == null)
+        {
+            name = "";
+        }
+
+        name = "%" + name + "%";
+        Logger.debug("name:" + name);
+
+        TypedQuery<EmployeeDetail> query =
+                db.em().createQuery("SELECT NEW EmployeeDetail(e.employeeId, e.firstName, e.lastName, t.titleName) " +
+                                    "FROM Employee e JOIN Title t ON e.titleId = t.titleId " +
+                                    "WHERE lastName LIKE :name OR firstName LIKE :name " +
+                                    "ORDER BY lastName, firstName, employeeId", EmployeeDetail.class);
+        query.setParameter("name", name);
+        List<EmployeeDetail> employees = query.getResultList();
+
+        return ok(views.html.employeesearch.render(employees));
+    }
 }
