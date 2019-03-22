@@ -1,34 +1,20 @@
+        var chartData = document.getElementById("piechart").getAttribute("data-values").split("|");
+        var chartColors = document.getElementById("piechart").getAttribute("color-values").split("|");
+        var chartLabels = document.getElementById("piechart").getAttribute("label-values").split("|");
+
 		var randomScalingFactor = function() {
 			return Math.round(Math.random() * 100);
 		};
 
 		var config = {
-			type: 'pie',
+			type: 'doughnut',
 			data: {
 				datasets: [{
-					data: [
-						randomScalingFactor(),
-						randomScalingFactor(),
-						randomScalingFactor(),
-						randomScalingFactor(),
-						randomScalingFactor(),
-					],
-					backgroundColor: [
-						window.chartColors.red,
-						window.chartColors.orange,
-						window.chartColors.yellow,
-						window.chartColors.green,
-						window.chartColors.blue,
-					],
+					data: chartData,
+					backgroundColor: chartColors,
 					label: 'Dataset 1'
 				}],
-				labels: [
-					'Red',
-					'Orange',
-					'Yellow',
-					'Green',
-					'Blue'
-				]
+				labels: chartLabels
 			},
 			options: {
 				responsive: true

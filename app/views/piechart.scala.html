@@ -1,6 +1,6 @@
-<!doctype html>
+@(chartValues : ChartValues)
+@doctype.render
 <html>
-
     <head>
         <title>Pie Chart</title>
         <script src="/assets/lib/chart.js/dist/Chart.js"></script>
@@ -14,7 +14,6 @@
         <button id="randomizeData">Randomize Data</button>
         <button id="addDataset">Add Dataset</button>
         <button id="removeDataset">Remove Dataset</button>
-        <script src="/assets/javascripts/piechart.js"></script>
+        <script src="/assets/javascripts/piechart.js" id="piechart" data-values="@chartValues.getDataValues" color-values="@chartValues.getColorValues" label-values="@chartValues.getLabelValues"></script>
     </body>
-
 </html>

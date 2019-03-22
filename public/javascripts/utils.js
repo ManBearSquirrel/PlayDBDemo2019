@@ -1,12 +1,12 @@
 'use strict';
 
 window.chartColors = {
-	red: 'rgb(255, 99, 132)',
+	red: 'rgb(255, 0, 0)',
 	orange: 'rgb(255, 159, 64)',
 	yellow: 'rgb(255, 205, 86)',
 	green: 'rgb(0, 255, 0)',
-	blue: 'rgb(54, 162, 235)',
-	purple: 'rgb(153, 102, 255)',
+	blue: 'rgb(0, 0, 255)',
+	purple: 'rgb(255, 0, 255)',
 	grey: 'rgb(201, 203, 207)'
 };
 
