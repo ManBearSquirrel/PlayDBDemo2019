@@ -3,6 +3,7 @@ package models;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.math.BigDecimal;
+import java.text.NumberFormat;
 
 @Entity
 public class CategorySummary
@@ -39,13 +40,29 @@ public class CategorySummary
         return distinctOrders;
     }
 
+    public String getFormattedDistinctOrders()
+    {
+        return NumberFormat.getIntegerInstance().format(distinctOrders);
+    }
+
     public long getTotalSold()
     {
         return totalSold;
+    }
+
+    public String getFormattedTotalSold()
+    {
+        return NumberFormat.getIntegerInstance().format(totalSold);
     }
 
     public BigDecimal getTotalSales()
     {
         return totalSales;
     }
+
+    public String getFormattedTotalSales()
+    {
+        return NumberFormat.getCurrencyInstance().format(totalSales);
+    }
+
 }

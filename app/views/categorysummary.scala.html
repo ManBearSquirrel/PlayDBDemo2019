@@ -4,8 +4,25 @@
     <head>
         <meta charset="UTF-8">
         <title>Title</title>
+        <link rel="stylesheet" href="/assets/lib/bootstrap/css/bootstrap.min.css">
+        <script src="/assets/lib/bootstrap/js/bootstrap.min.js"></script>
     </head>
     <body>
-        
+        <table class="table">
+           <tr>
+               <th>Category</th>
+               <th>Distinct Order</th>
+               <th>Total Sold</th>
+               <th>Total Sales</th>
+           </tr>
+        @for(categorySummary<-categorySummaries){
+           <tr>
+               <td>@categorySummary.getCategoryName</td>
+               <td>@categorySummary.getFormattedDistinctOrders</td>
+               <td>@categorySummary.getFormattedTotalSold</td>
+               <td>@categorySummary.getFormattedTotalSales</td>
+           </tr>
+        }
+        </table>
     </body>
 </html>
