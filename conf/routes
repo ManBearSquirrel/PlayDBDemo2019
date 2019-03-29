@@ -5,11 +5,15 @@
 # An example controller showing a sample home page
 GET     /                           controllers.HomeController.index
 
+GET     /login                      controllers.SessionController.getLogin
+POST    /login                      controllers.SessionController.postLogin
+
 GET     /employee/:id               controllers.EmployeeController.getEmployee(id:Integer)
 GET     /employeeadd                controllers.EmployeeController.getEmployeeAdd
 POST    /employeeadd                controllers.EmployeeController.postEmployeeAdd
 GET     /employeeedit/:id           controllers.EmployeeController.getEmployeeEdit(id:Integer)
 POST    /employeeedit/:id           controllers.EmployeeController.postEmployeeEdit(id:Integer)
+POST    /employeedelete/:id         controllers.EmployeeController.postEmployeeDelete(id:Integer)
 GET     /employees                  controllers.EmployeeController.getEmployees
 GET     /employeesearch             controllers.EmployeeController.getEmployeeSearch
 GET     /employeepicture/:id        controllers.EmployeeController.getPicture(id:Integer)

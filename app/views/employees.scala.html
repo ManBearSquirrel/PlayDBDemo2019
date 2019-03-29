@@ -35,7 +35,17 @@
                     <table class="table table-bordered">
                         <tr>
                             <th>Last Name</th>
-                            <th>First Name</th>
+                            <th>
+                                FirstName
+                                <form>
+                                    <input type="hidden" name="sortColumn" value="firstNameASC">
+                                    <input type="submit" value="UP" formaction="/employees">
+                                </form>
+                                <form>
+                                    <input type="hidden" name="sortColumn" value="firstNameDESC">
+                                    <input type="submit" value="DOWN" formaction="/employees">
+                                </form>
+                            </th>
                         </tr>
                         @for(employee<-employees){
                         <tr>

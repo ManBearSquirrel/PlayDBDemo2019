@@ -1,0 +1,17 @@
+@(message : String)
+@doctype.render
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Northwind TNG Login</title>
+    </head>
+    <body>
+        <form method="post">
+            @helper.CSRF.formField
+            <input type="text" name="username" placeholder="username">
+            <input type="password" name="password" placeholder="password">
+            <input type="submit" value="Login">
+            <p>@message</p>
+        </form>
+    </body>
+</html>
