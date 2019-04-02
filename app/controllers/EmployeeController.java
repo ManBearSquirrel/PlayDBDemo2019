@@ -18,7 +18,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-public class EmployeeController extends Controller
+public class EmployeeController extends BaseController
 {
     private JPAApi db;
     private FormFactory formFactory;
@@ -168,7 +168,7 @@ public class EmployeeController extends Controller
     }
 
 
-        public Result getEmployeeAdd()
+    public Result getEmployeeAdd()
     {
         return ok(views.html.employeeadd.render());
     }
@@ -197,38 +197,45 @@ public class EmployeeController extends Controller
         return ok("saved");
     }
 
-    @Transactional(readOnly=true)
+    @Transactional(readOnly = true)
     public Result getEmployees()
     {
-        DynamicForm form = formFactory.form().bindFromRequest();
-        String sortColumn = form.get("sortColumn");
-        if (sortColumn == null)
+        Result result = redirect("/login");
+
+        if (isLoggedIn())
         {
-            sortColumn = "";
+            DynamicForm form = formFactory.form().bindFromRequest();
+            String sortColumn = form.get("sortColumn");
+            if (sortColumn == null)
+            {
+                sortColumn = "";
+            }
+
+            String sortOrder = "";
+
+            switch (sortColumn)
+            {
+                case "firstNameASC":
+                    sortOrder = "firstName ASC, lastName, employeeId";
+                    break;
+                case "firstNameDESC":
+                    sortOrder = "firstName DESC, lastName, employeeId";
+                    break;
+                default:
+                    sortOrder = "lastName, firstName, employeeId";
+            }
+
+            String sql = "SELECT e FROM Employee e ORDER BY " + sortOrder;
+            TypedQuery<Employee> query = db.em().createQuery(sql, Employee.class);
+            List<Employee> employees = query.getResultList();
+
+            result = ok(views.html.employees.render(employees));
         }
 
-        String sortOrder = "";
-
-        switch (sortColumn)
-        {
-            case "firstNameASC":
-                sortOrder = "firstName ASC, lastName, employeeId";
-                break;
-            case "firstNameDESC":
-                sortOrder = "firstName DESC, lastName, employeeId";
-                break;
-            default:
-                sortOrder = "lastName, firstName, employeeId";
-        }
-
-        String sql = "SELECT e FROM Employee e ORDER BY " + sortOrder;
-        TypedQuery<Employee> query = db.em().createQuery(sql, Employee.class);
-        List<Employee> employees = query.getResultList();
-
-        return ok(views.html.employees.render(employees));
+        return result;
     }
 
-    @Transactional(readOnly=true)
+    @Transactional(readOnly = true)
     public Result getEmployeeSearch()
     {
         DynamicForm form = formFactory.form().bindFromRequest();
@@ -244,9 +251,9 @@ public class EmployeeController extends Controller
 
         TypedQuery<EmployeeDetail> query =
                 db.em().createQuery("SELECT NEW EmployeeDetail(e.employeeId, e.firstName, e.lastName, t.titleName) " +
-                                    "FROM Employee e JOIN Title t ON e.titleId = t.titleId " +
-                                    "WHERE lastName LIKE :name OR firstName LIKE :name " +
-                                    "ORDER BY lastName, firstName, employeeId", EmployeeDetail.class);
+                        "FROM Employee e JOIN Title t ON e.titleId = t.titleId " +
+                        "WHERE lastName LIKE :name OR firstName LIKE :name " +
+                        "ORDER BY lastName, firstName, employeeId", EmployeeDetail.class);
         query.setParameter("name", name);
         List<EmployeeDetail> employees = query.getResultList();
 

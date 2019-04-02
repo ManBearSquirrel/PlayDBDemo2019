@@ -13,7 +13,7 @@ import javax.inject.Inject;
 import javax.persistence.TypedQuery;
 import java.util.List;
 
-public class SessionController extends Controller
+public class SessionController extends BaseController
 {
     private JPAApi db;
     private FormFactory formFactory;
@@ -50,10 +50,12 @@ public class SessionController extends Controller
         if (employees.size() == 1)
         {
             Employee employee = employees.get(0);
-            result = redirect("/employee/" + employee.getEmployeeId());
+            result = redirect("/employees");
+            login(employee);
         }
         else
         {
+            logout();
             String message = "Incorrect username or password. Please try again.";
             result = ok(views.html.login.render(message));
         }
